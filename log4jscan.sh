@@ -5,7 +5,7 @@
 #Description    : Scan for log4j loaded into running processes
 #Version        : 1.0.0
 #License        : Apache License 2.0
-#Args    	      : None                                                                                          
+#Args    	: None                                                                                          
 #Author       	: Doron Shem Tov (Intezer)                                                
 #Email         	: support@intezer.com                                           
 ###################################################################
