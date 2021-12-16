@@ -3,7 +3,7 @@
 ###################################################################
 #Script Name    : log4jscan                                                                                             
 #Description    : Scan for log4j loaded into running processes
-#Version        : 1.0.0
+#Version        : 1.0.1
 #License        : Apache License 2.0
 #Args    	: None                                                                                          
 #Author       	: Doron Shem Tov (Intezer)                                                
@@ -17,6 +17,8 @@ print_match_info() {
 	has_jndilookupclass=$3
 	jar_path=$4
 	container_id=$(grep -Po -m 1 "((.*/docker/\K.*)|(.*/k8s.io/\K.*))" /proc/${pid}/cgroup)
+	echo ""
+	echo ""
 	echo "Found a process using Log4j:"
 	echo "   PID: ${pid}"
 	if [[ -n ${container_id} ]]; then
@@ -33,11 +35,37 @@ print_match_info() {
 	echo ""
 }
 
+print_summary() {
+	echo ""
+	echo ""
+        echo "Summary:"
+        echo "* If Log4j wan found during the scan, please follow the guidelines provided by The Apache Software Foundation at https://logging.apache.org/log4j/2.x/security.html"
+        echo "* Since it is possible that Log4j is installed but not being used at the moment, it is recommended to check if Log4j is installed using your package manger (e.g. apt)"
+        echo "* Get the latest version of log4jscan at https://github.com/intezer/log4jscan"
+}
+
+print_intro() {
+	echo "###############################################################"
+	echo "                        log4jscan v1.0.1                       "
+	echo "###############################################################"
+	echo ""
+	echo "* Scanning running processes"
+	echo "* Looking for log4j-core in loaded jar files"
+	echo "* Processes with loaded log4j-core will be displayed below"
+	echo ""
+	echo "log4jscan is provided by Intezer Labs Ltd - https://intezer.com"
+	echo "###############################################################"
+	echo ""
+	echo ""
+}
+
 main() {
-	found_log4j=false
-	matched_files=()
 	# go over all running processes with loaded jar files
-	find /proc/*/fd/ -type l | while read line; do
+	find /proc/*/fd/ -type l 2>/dev/null | while read line; do
+		# print a spinner
+		sp="/-\|"
+    		printf "\b${sp:i++%${#sp}:1}"
+		
        		# resolve the file descriptor target
 		link_target=$(readlink ${line})
 
@@ -86,15 +114,8 @@ main() {
 	
 		print_match_info $pid $log4j_version $has_jndilookupclass $link_target
 	done
-
-	echo "Summary:"
-	if [[ ! found_log4j ]]; then
-		echo "   Log4j wan not found in the currently running processes."
-		echo "   Since it is possible that Log4j is installed but not being used at the moment, it is recommended to check if Log4j is installed using your package manger (e.g. apt)"
-		echo "   Follow the guidelines provided by The Apache Software Foundation at https://logging.apache.org/log4j/2.x/security.html"
-	else
-		echo "   Log4j was found during the scan, please follow the guidelines provided by The Apache Software Foundation at https://logging.apache.org/log4j/2.x/security.html"
-	fi
 }
 
+print_intro
 main
+print_summary
