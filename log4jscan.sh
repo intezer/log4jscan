@@ -6,7 +6,7 @@
 #Version        : 1.0.1
 #License        : Apache License 2.0
 #Args    	: None                                                                                          
-#Author       	: Doron Shem Tov (Intezer)                                                
+#Author       	: Doron Shem Tov (Intezer - https://intezer.com)
 #Email         	: support@intezer.com                                           
 ###################################################################
 
@@ -53,7 +53,7 @@ print_intro() {
 	echo "* Looking for log4j-core in loaded jar files"
 	echo "* Processes with loaded log4j-core will be displayed below"
 	echo ""
-	echo "log4jscan is provided by Intezer Labs Ltd - https://intezer.com"
+	echo "log4jscan is provided by Intezer - https://intezer.com"
 	echo "###############################################################"
 	echo ""
 	echo ""
