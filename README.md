@@ -1,16 +1,13 @@
 # log4jscan for Linux
 
-## Descrpition
-Scan **Linux** hosts for **active usage** of log4j (log4j-core)
-* Only running processes are scanned
+Scan Linux hosts for **active usage** of log4j (log4j-core) for the purpose of identifying potentially vulnerable versions.
+This scanner is designed to be lightweight, fast, require no dependencies and support containerized/K8s environments.
 
-### Provided info:
-* PID
-* Container ID (if relevant)
-* Log4j version
-* Jar path
-* Indication if the jar contains the vulnerable Jndilookup class
-* Process command line
+## Advantages
+* Identity only potentially vulnerable log4j instances (log4j-core and not other log4j components that are not vulnerable)
+* Identify only running instances of log4j instead of scanning the entire filesystem
+* Provides container-related info for log4j instances that run within Docker and CRI containers
+* Easy to use - no need to provide a speciific directory to scan 
 
 ## Usage
 ````
@@ -18,15 +15,6 @@ chmod +x ./log4jscan.sh
 sudo ./log4jscan.sh
 ````
 
-## How it works?
-* log4jscan will go over all running processes, and will look for jar files opened by each process
-* If the jar file itself is log4j-core-*.jar or if log4j is embedded into the application jar, it will look for the Jndilookup class inside the jar
-  * Thanks @CyberRaiju for the inspiration https://twitter.com/CyberRaiju/status/1469505677580124160
-* Additional process info is collected from procfs
-
-## Containers
- * log4jscan provides the container ID of the process, more info about the container could be obtained using commands like `docker inspect {container_id}`
-  
 ## Example
 ```` 
 ###############################################################
@@ -37,7 +25,7 @@ sudo ./log4jscan.sh
 * Looking for log4j-core in loaded jar files
 * Processes with loaded log4j-core will be displayed below
 
-log4jscan is provided by Intezer Labs Ltd - https://intezer.com
+log4jscan is provided by Intezer - https://intezer.com
 ###############################################################
 
 Found a process using Log4j:
@@ -53,3 +41,19 @@ Summary:
 * Since it is possible that Log4j is installed but not being used at the moment, it is recommended to check if Log4j is installed using your package manger (e.g. apt)
 * Get the latest version of log4jscan at https://github.com/intezer/log4jscan
    ````
+
+## Requirements 
+* `/bin/bash`
+
+## Provided info
+* PID
+* Container ID (if relevant)
+* Log4j version
+* Jar path
+* Indication if the jar contains the vulnerable Jndilookup class
+* Process command line
+
+## How it works?
+* log4jscan will scan all running processes for jar files opened by each process
+* If the jar file itself is log4j-core-*.jar or if log4j is embedded into the application jar, it will look for the Jndilookup class inside the jar (Thanks @CyberRaiju for the inspiration https://twitter.com/CyberRaiju/status/1469505677580124160)
+* Additional process info is collected from procfs
