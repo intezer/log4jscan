@@ -29,7 +29,17 @@ sudo ./log4jscan.sh
   
 ## Example
 ```` 
-vagrant@ubuntu-bionic:~$ sudo ./log4jscan.sh 
+###############################################################
+                        log4jscan v1.0.1                       
+###############################################################
+
+* Scanning running processes
+* Looking for log4j-core in loaded jar files
+* Processes with loaded log4j-core will be displayed below
+
+log4jscan is provided by Intezer Labs Ltd - https://intezer.com
+###############################################################
+
 Found a process using Log4j:
    PID: 22556
    Container ID: 73004f1018480283dc99ab7e1ed4de3d0d8a1d566d88089cca7ba79fb18c1f40
@@ -39,5 +49,7 @@ Found a process using Log4j:
    Process command line: java -jar /app/spring-boot-application.jar 
 
 Summary:
-   Log4j was found during the scan, please follow the guidelines provided by The Apache Software Foundation at https://logging.apache.org/log4j/2.x/security.html 
+* If Log4j wan found during the scan, please follow the guidelines provided by The Apache Software Foundation at https://logging.apache.org/log4j/2.x/security.html
+* Since it is possible that Log4j is installed but not being used at the moment, it is recommended to check if Log4j is installed using your package manger (e.g. apt)
+* Get the latest version of log4jscan at https://github.com/intezer/log4jscan
    ````
