@@ -12,8 +12,9 @@ This scanner is designed to be lightweight, fast, require no dependencies and su
 ## Usage
 ````
 chmod +x ./log4jscan.sh
-sudo ./log4jscan.sh
+sudo ./log4jscan.sh [deep]
 ````
+By deafult the scan look only for `log4j-core.*jar` files. If ran with 'deep' option check every `.jar` file for the `JndiLookup.class`
 
 ## Example
 ```` 
