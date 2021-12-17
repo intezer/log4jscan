@@ -56,6 +56,9 @@ print_intro() {
 	echo "log4jscan is provided by Intezer - https://intezer.com"
 	echo "###############################################################"
 	echo ""
+	echo "Usage: log4jscan.sh [relaxed]"
+	echo "       By deafult the scan look only for 'log4j-core.*jar' files. If ran with 'relaxed' option"
+        echo "       check every '.jar' file for the 'JndiLookup.class'"
 	echo ""
 }
 
@@ -79,21 +82,22 @@ main() {
 		pid=${proc_base##*/}
     		abs_path=$proc_base/root$link_target
 
-
-		if [[ "$abs_path" =~ log4j-core.*jar ]]; then
-                	# log4j-core is loaded
-			found_log4j=true
-                	log4j_jar_name=${abs_path%.*}
-			log4j_version=${log4j_jar_name##*-*-}
-		else
-			log4j_match=$(grep -aio -m 1 "log4j-core.*jar" ${abs_path})
-			# skip files without log4j
-			if [[ -z "$log4j_match" ]]; then
-				continue
-			else
+		if [[ "$1" != "relaxed" ]]; then
+			if [[ "$abs_path" =~ log4j-core.*jar ]]; then
+       		         	# log4j-core is loaded
 				found_log4j=true
-        			log4j_jar_name=${log4j_match%.*}
-        			log4j_version=${log4j_jar_name##*-*-}
+                		log4j_jar_name=${abs_path%.*}
+				log4j_version=${log4j_jar_name##*-*-}
+			else
+				log4j_match=$(grep -aio -m 1 "log4j-core.*jar" ${abs_path})
+				# skip files without log4j
+				if [[ -z "$log4j_match" ]]; then
+					continue
+				else
+					found_log4j=true
+        				log4j_jar_name=${log4j_match%.*}
+        				log4j_version=${log4j_jar_name##*-*-}
+				fi
 			fi
 		fi
 
@@ -112,10 +116,24 @@ main() {
 			has_jndilookupclass=false
 		fi
 	
-		print_match_info $pid $log4j_version $has_jndilookupclass $link_target
+		if [[ "$1" != "relaxed" ]]; then
+			print_match_info $pid $log4j_version $has_jndilookupclass $link_target
+		else
+			if [[ {$has_jndilookupclass} == "true" ]]; then
+				print_match_info $pid $log4j_version $has_jndilookupclass $link_target
+			fi
+		fi
 	done
 }
 
 print_intro
+
+# Check for root: without root capabilities, check can be partial
+if [[ "$EUID" -ne 0 ]]; then 
+	echo "Please run as *root*"
+	echo "Exiting..."
+  	exit
+fi
+
 main
 print_summary
