@@ -63,6 +63,8 @@ print_intro() {
 }
 
 main() {
+ 	mode=$1
+
 	# go over all running processes with loaded jar files
 	find /proc/*/fd/ -type l 2>/dev/null | while read line; do
 		# print a spinner
@@ -82,7 +84,7 @@ main() {
 		pid=${proc_base##*/}
     		abs_path=$proc_base/root$link_target
 
-		if [[ "$1" != "relaxed" ]]; then
+		if [[ ${mode} != "relaxed" ]]; then
 			if [[ "$abs_path" =~ log4j-core.*jar ]]; then
        		         	# log4j-core is loaded
 				found_log4j=true
@@ -116,11 +118,11 @@ main() {
 			has_jndilookupclass=false
 		fi
 	
-		if [[ "$1" != "relaxed" ]]; then
+		if [[ ${mode} != "relaxed" ]]; then
 			print_match_info $pid $log4j_version $has_jndilookupclass $link_target
 		else
 			if [[ {$has_jndilookupclass} == "true" ]]; then
-				print_match_info $pid $log4j_version $has_jndilookupclass $link_target
+				print_match_info $pid "Unknown" $has_jndilookupclass $link_target
 			fi
 		fi
 	done
@@ -135,5 +137,6 @@ if [[ "$EUID" -ne 0 ]]; then
   	exit
 fi
 
-main
+mode=$1
+main $mode
 print_summary
