@@ -37,8 +37,8 @@ Found a process using Log4j:
    Process command line: java -jar /app/spring-boot-application.jar 
 
 Summary:
-* If Log4j wan found during the scan, please follow the guidelines provided by The Apache Software Foundation at https://logging.apache.org/log4j/2.x/security.html
-* Since it is possible that Log4j is installed but not being used at the moment, it is recommended to check if Log4j is installed using your package manger (e.g. apt)
+* If Log4j was found during the scan, please follow the guidelines provided by The Apache Software Foundation at https://logging.apache.org/log4j/2.x/security.html
+* Since it is possible that Log4j is installed but not being used at the moment, it is recommended to check if Log4j is installed using your package manager (e.g. apt)
 * Get the latest version of log4jscan at https://github.com/intezer/log4jscan
    ````
 
