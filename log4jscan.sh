@@ -104,7 +104,7 @@ main() {
 			matched_files+=($abs_path)
 		fi
 	
-		# look for vulnerable JndiLooup class inside the jar
+		# look for vulnerable JndiLookup class inside the jar
 		# thanks @CyberRaiju for the inspiration https://twitter.com/CyberRaiju/status/1469505677580124160
 		if grep -q -l -r -m 1 JndiLookup.class $abs_path; then
 			has_jndilookupclass=true
