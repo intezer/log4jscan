@@ -39,8 +39,8 @@ print_summary() {
 	echo ""
 	echo ""
         echo "Summary:"
-        echo "* If Log4j wan found during the scan, please follow the guidelines provided by The Apache Software Foundation at https://logging.apache.org/log4j/2.x/security.html"
-        echo "* Since it is possible that Log4j is installed but not being used at the moment, it is recommended to check if Log4j is installed using your package manger (e.g. apt)"
+        echo "* If Log4j was found during the scan, please follow the guidelines provided by The Apache Software Foundation at https://logging.apache.org/log4j/2.x/security.html"
+        echo "* Since it is possible that Log4j is installed but not being used at the moment, it is recommended to check if Log4j is installed using your package manager (e.g. apt)"
         echo "* Get the latest version of log4jscan at https://github.com/intezer/log4jscan"
 }
 
