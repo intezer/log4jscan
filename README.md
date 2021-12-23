@@ -6,6 +6,7 @@ This scanner is designed to be lightweight, fast, require no dependencies and su
 ## Advantages
 * Identity only potentially vulnerable log4j instances (log4j-core and not other log4j components that are not vulnerable)
 * Identify only running instances of log4j instead of scanning the entire filesystem
+* Identify log4j instances that were removed from disk but still loaded into running processes
 * Provides container-related info for log4j instances that run within Docker and CRI containers
 * Easy to use - no need to provide a speciific directory to scan 
 
@@ -18,7 +19,7 @@ sudo ./log4jscan.sh
 ## Example
 ```` 
 ###############################################################
-                        log4jscan v1.0.1                       
+                        log4jscan v1.2.0                       
 ###############################################################
 
 * Scanning running processes
