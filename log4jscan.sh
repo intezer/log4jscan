@@ -3,7 +3,7 @@
 ###################################################################
 #Script Name    : log4jscan                                                                                             
 #Description    : Scan for log4j loaded into running processes
-#Version        : 1.2.0
+#Version        : 1.2.1
 #License        : Apache License 2.0
 #Args    	: None                                                                                          
 #Author       	: Doron Shem Tov (Intezer - https://intezer.com)
@@ -17,7 +17,7 @@ print_match_info() {
 	fd_target=$4
 	jar_deleted=$5
 	fd_path=$6
-	container_id=$(grep -Po -m 1 "((.*/docker/\K.*)|(.*/k8s.io/\K.*))" /proc/${pid}/cgroup)
+	container_id=$(grep -Po -m 1 "((.*/docker/\K.*)|(.*/k8s.io/\K.*)|(.*/kubepods/.*/.*/\K.*))" /proc/${pid}/cgroup)
 	echo ""
 	echo ""
 	echo "Found a process using Log4j:"
@@ -71,7 +71,7 @@ print_summary() {
 
 print_intro() {
 	echo "###############################################################"
-	echo "                        log4jscan v1.2.0                       "
+	echo "                        log4jscan v1.2.1                       "
 	echo "###############################################################"
 	echo ""
 	echo "* Scanning running processes"
